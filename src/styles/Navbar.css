@@ -1,0 +1,113 @@
+.navbar {
+  background-color: rgba(233, 30, 99, 0.4);
+  color: white;
+  padding: 1rem;
+  backdrop-filter: blur(5px); /* Adds frosted glass effect */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.navbar-container {
+  max-width: 72rem;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: white;
+  transition: color 0.3s ease;
+}
+
+.navbar-logo:hover {
+  color: #f4c1d2; /* Matches link hover color */
+}
+
+.navbar-links {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.navbar-link {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.navbar-link:hover {
+  color: #f4c1d2;
+}
+
+.navbar-link.active {
+  color: #f4c1d2;
+  text-decoration: underline;
+}
+
+.navbar-logout {
+  background: rgba(255, 255, 255, 0.9); /* White with slight transparency */
+  color: #e91e63; /* Pink text to match theme */
+  border: 2px solid #f4c1d2; /* Border matches hover/active color */
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.navbar-logout:hover {
+  background: #f4c1d2; /* Matches link hover/active color */
+  color: white;
+  transform: translateY(-2px); /* Subtle lift effect */
+  box-shadow: 0 4px 10px rgba(244, 143, 177, 0.3);
+}
+
+.navbar-logout:active {
+  transform: translateY(0);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .navbar-container {
+    flex-direction: row; /* Keep horizontal layout */
+    gap: 0.5rem;
+  }
+
+  .navbar-links {
+    gap: 0.75rem; /* Slightly reduce gap for smaller screens */
+  }
+
+  .navbar-link {
+    font-size: 0.95rem; /* Slightly smaller font */
+  }
+
+  .navbar-logout {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-logo {
+    font-size: 1.3rem;
+  }
+
+  .navbar-link {
+    font-size: 0.9rem;
+  }
+
+  .navbar-links {
+    gap: 0.5rem; /* Further reduce gap for very small screens */
+  }
+
+  .navbar-logout {
+    padding: 0.3rem 0.7rem;
+    font-size: 0.8rem;
+  }
+}

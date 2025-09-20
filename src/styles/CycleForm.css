@@ -1,0 +1,51 @@
+.cycle-form-container {
+  background: linear-gradient(135deg, #fce4ec, #f8bbd9);
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 400px;
+  margin: 1rem auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.cycle-form-container h2 {
+  color: #e91e63;
+  text-align: center;
+}
+
+.input-group {
+  margin-bottom: 1rem;
+}
+
+.input-group label {
+  display: block;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 2px solid #f4c1d2;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.submit-button {
+  background: #e91e63;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1rem;
+}
+
+.submit-button:hover {
+  background: #f4c1d2;
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+}
