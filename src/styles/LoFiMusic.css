@@ -1,11 +1,130 @@
-/* LoFiMusic.css */
 .lofi-container {
-  max-width: 600px;
+  max-width: 800px;
   margin: 20px auto;
   padding: 20px;
   text-align: center;
-  background-color: #f0f0f0;
+  background: linear-gradient(135deg, #fff5f7 0%, #fce4ec 100%);
+  border-radius: 20px;
+  box-shadow: 0 8px 16px rgba(244, 143, 177, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.lofi-title {
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #ec407a, #e91e63);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 10px;
+}
+
+.lofi-subtitle {
+  color: #9c27b0;
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+  opacity: 0.8;
+}
+
+.playlist-selector {
+  margin-bottom: 30px;
+}
+
+.playlist-selector h3 {
+  color: #e91e63;
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+}
+
+.playlist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.playlist-card {
+  background: rgba(255, 255, 255, 0.8);
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.playlist-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(233, 30, 99, 0.2);
+}
+
+.playlist-card.active {
+  border: 2px solid #e91e63;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 193, 210, 0.3));
+}
+
+.playlist-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #ec407a, #e91e63);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.playlist-card:hover::before,
+.playlist-card.active::before {
+  opacity: 0.1;
+}
+
+.playlist-thumbnail {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
   border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.playlist-card h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.playlist-card p {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0;
+}
+
+.player-section {
+  margin-bottom: 20px;
+}
+
+.current-playlist {
+  background: rgba(248, 193, 210, 0.2);
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.current-playlist h3 {
+  color: #e91e63;
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+}
+
+.current-playlist p {
+  color: #9c27b0;
+  font-size: 0.95rem;
+  margin: 0;
 }
 
 .player-wrapper {
@@ -14,6 +133,8 @@
   height: 0;
   overflow: hidden;
   margin: 20px 0;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .player-wrapper iframe {
@@ -22,18 +143,163 @@
   left: 0;
   width: 100%;
   height: 100%;
+  border-radius: 12px;
 }
 
-button {
-  padding: 10px 20px;
-  background-color: #FF9800;
+.player-controls {
+  margin-top: 15px;
+}
+
+.play-button {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #ec407a, #e91e63);
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  margin-top: 10px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(233, 30, 99, 0.3);
 }
 
-button:hover {
-  background-color: #F57C00;
+.play-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(233, 30, 99, 0.4);
+}
+
+.play-button.playing {
+  background: linear-gradient(135deg, #9c27b0, #7b1fa2);
+}
+
+.api-note {
+  margin-top: 20px;
+  color: #666;
+}
+
+.api-note a {
+  color: #e91e63;
+  text-decoration: none;
+}
+
+.api-note a:hover {
+  text-decoration: underline;
+}
+
+.lofi-decoration {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.floating-note,
+.floating-heart {
+  position: absolute;
+  font-size: 1.5rem;
+  opacity: 0.3;
+  animation: floatMusic 6s ease-in-out infinite;
+}
+
+.floating-note:nth-child(1) {
+  top: 10%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.floating-heart {
+  top: 70%;
+  right: 10%;
+  animation-delay: 2s;
+}
+
+.floating-note:nth-child(3) {
+  top: 80%;
+  left: 80%;
+  animation-delay: 4s;
+}
+
+@keyframes floatMusic {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+}
+
+@media (min-width: 481px) {
+  .lofi-container {
+    max-width: 1000px;
+    padding: 30px;
+    border-radius: 24px;
+  }
+
+  .lofi-title {
+    font-size: 2.5rem;
+  }
+
+  .lofi-subtitle {
+    font-size: 1.3rem;
+  }
+
+  .playlist-selector h3 {
+    font-size: 1.5rem;
+  }
+
+  .playlist-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+
+  .playlist-card {
+    padding: 20px;
+  }
+
+  .playlist-thumbnail {
+    height: 140px;
+  }
+
+  .playlist-card h4 {
+    font-size: 1.1rem;
+  }
+
+  .playlist-card p {
+    font-size: 1rem;
+  }
+
+  .current-playlist h3 {
+    font-size: 1.4rem;
+  }
+
+  .player-wrapper {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .play-button {
+    padding: 14px 28px;
+    font-size: 1.1rem;
+    border-radius: 30px;
+  }
+
+  .floating-note,
+  .floating-heart {
+    font-size: 2rem;
+    opacity: 0.4;
+  }
+}
+
+@media (max-width: 480px) {
+  .playlist-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .player-wrapper {
+    padding-bottom: 75%; /* Taller aspect ratio for mobile */
+  }
 }
