@@ -49,3 +49,36 @@
   color: red;
   text-align: center;
 }
+
+@media (min-width: 481px) {
+  .cycle-form-container {
+    max-width: 600px;
+    padding: 3rem;
+    border-radius: 16px;
+  }
+
+  .cycle-form-container h2 {
+    font-size: 2rem;
+  }
+
+  .input-group label {
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .input-group input {
+    padding: 0.75rem;
+    font-size: 1.1rem;
+    border-radius: 10px;
+  }
+
+  .submit-button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.2rem;
+    border-radius: 10px;
+  }
+
+  .error-message {
+    font-size: 1.1rem;
+  }
+}
