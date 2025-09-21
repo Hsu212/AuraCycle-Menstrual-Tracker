@@ -10,7 +10,7 @@ import Knowledge from './components/Knowledge';
 import SignInPage from './components/SignInPage';
 import SignUpPage from './components/SignUpPage';
 import UserProfile from './components/UserProfile';
-import './styles/App.css';
+import './App.css';
 import { supabase } from './supabase';
 import { Session, User } from '@supabase/supabase-js';
 
