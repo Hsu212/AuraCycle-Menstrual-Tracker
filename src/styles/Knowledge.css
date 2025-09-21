@@ -1,0 +1,110 @@
+.knowledge-container {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 1.25rem;
+}
+
+.knowledge-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.knowledge-section {
+  background-color: #fff;
+  padding: 1.25rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.25rem;
+}
+
+.knowledge-subtitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.knowledge-text {
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.knowledge-list {
+  list-style-type: disc;
+  padding-left: 1.25rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.knowledge-article-list {
+  list-style-type: disc;
+  padding-left: 1.25rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.knowledge-article-list a {
+  color: #e91e63;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+.knowledge-article-list a:hover {
+  color: #c2185b;
+}
+
+.knowledge-textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #f4c1d2;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  background-color: #fff5f7;
+}
+
+@media (min-width: 481px) {
+  .knowledge-container {
+    max-width: 60rem;
+    padding: 2rem;
+  }
+
+  .knowledge-title {
+    font-size: 2.5rem;
+    color: #e91e63;
+    background: linear-gradient(135deg, #ec407a, #ff8ac5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .knowledge-section {
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    border: 2px solid transparent;
+    background: linear-gradient(#fff, #fff) padding-box, linear-gradient(135deg, #ff8ac5, #ffb1c8, #f8c1ff) border-box;
+  }
+
+  .knowledge-subtitle {
+    font-size: 1.75rem;
+    color: #e91e63;
+  }
+
+  .knowledge-text,
+  .knowledge-list li,
+  .knowledge-article-list li {
+    font-size: 1.2rem;
+  }
+
+  .knowledge-article-list a {
+    font-size: 1.2rem;
+  }
+
+  .knowledge-textarea {
+    padding: 0.75rem;
+    font-size: 1.2rem;
+    border-radius: 0.5rem;
+  }
+}
