@@ -1,50 +1,155 @@
-// LoFiMusic.tsx
-import React, { useEffect, useState } from 'react';
-import '../styles/LoFiMusic.css'; // We'll define CSS below
-
-// Note: For a real implementation, get a YouTube API key from https://developers.google.com/youtube/v3
-// and use it to search/fetch lo-fi playlists. Here, we use a simple embed example with a static playlist.
-// For dynamic API, replace with fetch to YouTube Data API v3 endpoint: https://www.googleapis.com/youtube/v3/search?part=snippet&q=lofi+relaxation&type=video&key=YOUR_API_KEY
+import React, { useState, useRef, useEffect } from 'react';
+import '../styles/LoFiMusic.css';
 
 const LoFiMusic: React.FC = () => {
-  const [playlistId] = useState('PL4fGSI1pDJn6jXS_Tv_N9B8Z0HTRVJE0m'); // Example lo-fi playlist ID from YouTube
+  const [selectedTrack, setSelectedTrack] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  // Dummy lo-fi tracks with free audio URLs (replace with actual free music URLs)
+  const tracks = [
+    {
+      id: 1,
+      title: 'ChilledCow - Lofi Hip Hop Radio',
+      artist: 'ChilledCow',
+      description: 'Beats to relax/study to',
+      thumbnail: 'https://i.ytimg.com/vi/Jn8s5k8rH3c/maxresdefault.jpg',
+      audioUrl: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav' // Replace with actual lo-fi track URL
+    },
+    {
+      id: 2,
+      title: 'Lofi Girl - Late Night Vibes',
+      artist: 'Lofi Girl',
+      description: 'Perfect for late night studying and relaxation',
+      thumbnail: 'https://i.ytimg.com/vi/5qap5aO4i9A/maxresdefault.jpg',
+      audioUrl: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav' // Replace with actual lo-fi track URL
+    },
+    {
+      id: 3,
+      title: 'Chillhop Music - Essential Mix',
+      artist: 'Chillhop Music',
+      description: 'Smooth jazzhop and chillhop beats',
+      thumbnail: 'https://i.ytimg.com/vi/7NOSDKb0HlM/maxresdefault.jpg',
+      audioUrl: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav' // Replace with actual lo-fi track URL
+    },
+    {
+      id: 4,
+      title: 'Lofi Rainy Mood - Study & Relax',
+      artist: 'Lofi Rainy Mood',
+      description: 'Lo-fi beats with rain sounds for deep focus',
+      thumbnail: 'https://i.ytimg.com/vi/5yx6BWlEVcY/maxresdefault.jpg',
+      audioUrl: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav' // Replace with actual lo-fi track URL
+    }
+  ];
 
   useEffect(() => {
-    // Embed YouTube player logic can be extended with YouTube IFrame API for play/pause control
-    // For now, simple embed
-  }, []);
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (isPlaying) {
+      audio.play().catch(e => console.error('Playback failed:', e));
+    } else {
+      audio.pause();
+    }
+  }, [isPlaying, selectedTrack]);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (audio) {
+      audio.addEventListener('ended', () => {
+        // Auto-play next track or loop current one
+        setSelectedTrack((prev) => (prev + 1) % tracks.length);
+        setIsPlaying(true);
+      });
+    }
+
+    return () => {
+      if (audio) {
+        audio.removeEventListener('ended', () => {});
+      }
+    };
+  }, [tracks.length]);
 
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
-    // In full impl, use YouTube Player API to control playback
   };
+
+  const currentTrack = tracks[selectedTrack];
 
   return (
     <div className="lofi-container">
-      <h2>Relaxation Lo-Fi Music</h2>
-      <p>Chill out with soothing lo-fi beats to ease menstrual stress.</p>
-      <div className="player-wrapper">
-        <iframe
-          width="100%"
-          height="315"
-          src={`https://www.youtube.com/embed/videoseries?list=${playlistId}&autoplay=${isPlaying ? 1 : 0}`}
-          title="Lo-Fi Playlist"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        ></iframe>
+      <h2 className="lofi-title">Relaxation Lo-Fi Music</h2>
+      <p className="lofi-subtitle">Chill out with soothing lo-fi beats to ease menstrual stress</p>
+      
+      <div className="playlist-selector">
+        <h3>Select Your Vibe:</h3>
+        <div className="playlist-grid">
+          {tracks.map((track, index) => (
+            <div
+              key={index}
+              className={`playlist-card ${selectedTrack === index ? 'active' : ''}`}
+              onClick={() => {
+                setSelectedTrack(index);
+                setIsPlaying(false); // Pause when changing track
+              }}
+            >
+              <img src={track.thumbnail} alt={track.title} className="playlist-thumbnail" />
+              <h4>{track.title}</h4>
+              <p className="track-artist">{track.artist}</p>
+              <p>{track.description}</p>
+            </div>
+          ))}
+        </div>
       </div>
-      <button onClick={togglePlay}>
-        {isPlaying ? 'Pause' : 'Play'} Music 🎵
-      </button>
-      <p>
+
+      <div className="player-section">
+        <div className="current-playlist">
+          <h3>Now Playing: {currentTrack.title}</h3>
+          <p className="track-artist">by {currentTrack.artist}</p>
+          <p>{currentTrack.description}</p>
+        </div>
+        
+        <audio
+          ref={audioRef}
+          src={currentTrack.audioUrl}
+          preload="metadata"
+          className="audio-player"
+        >
+          Your browser does not support the audio element.
+        </audio>
+
+        <div className="player-controls">
+          <button 
+            onClick={togglePlay} 
+            className={`play-button ${isPlaying ? 'playing' : ''}`}
+            disabled={!currentTrack.audioUrl}
+          >
+            {isPlaying ? '⏸️ Pause' : '▶️ Play'} Music
+          </button>
+          <div className="audio-progress">
+            <span className="current-time">0:00</span>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value={0}
+              className="progress-slider"
+              disabled
+            />
+            <span className="duration">0:00</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="lofi-decoration">
+        <div className="floating-note">🎵</div>
+        <div className="floating-heart">💖</div>
+        <div className="floating-note">🎶</div>
+      </div>
+
+      <p className="api-note">
         <small>
-          Powered by YouTube API. Get your own key for custom searches at{' '}
-          <a href="https://developers.google.com/youtube/v3" target="_blank" rel="noopener noreferrer">
-            YouTube Developers
-          </a>
-          .
+          Free lo-fi music for relaxation. All tracks are for personal use.
         </small>
       </p>
     </div>
