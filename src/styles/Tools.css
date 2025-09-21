@@ -1,0 +1,133 @@
+.tools-container {
+  padding: 1.25rem;
+  max-width: 42rem;
+  margin: 0 auto;
+}
+
+.tools-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #4a4848;
+  margin-bottom: 0.5rem;
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.tool-card {
+  border: 1px solid #f4c1d2;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  text-align: center;
+  background-color: #fff5f7;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tool-image {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.tool-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #656363;
+  margin-bottom: 0.5rem;
+}
+
+.tool-description {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+@media (min-width: 481px) {
+  .tools-container {
+    max-width: 60rem;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    border: 2px solid transparent;
+    background: linear-gradient(#fff5f7, #fff5f7) padding-box, linear-gradient(135deg, #ff8ac5, #ffb1c8, #f8c1ff) border-box;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tools-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 0.75rem;
+    border: 2px solid transparent;
+    background: linear-gradient(135deg, #ff8ac5, #ffb1c8, #f8c1ff) border-box;
+    animation: borderGlow 5s ease-in-out infinite;
+    z-index: -1;
+    opacity: 0.5;
+  }
+
+  .tools-title {
+    font-size: 1.75rem;
+    color: #e91e63;
+    background: linear-gradient(135deg, #e1306b, #ed9eb0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .tools-grid {
+    gap: 1.5rem;
+  }
+
+  .tool-card {
+    padding: 1.5rem;
+    border: 2px solid #f4c1d2;
+    border-radius: 0.75rem;
+    transition: transform 0.3s ease;
+  }
+
+  .tool-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .tool-image {
+    height: 150px;
+  }
+
+  .tool-name {
+    font-size: 1.4rem;
+  }
+
+  .tool-description {
+    font-size: 1.1rem;
+  }
+
+  .tools-container::after {
+    content: '✨';
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 2rem;
+    opacity: 0.4;
+    animation: sparkle 3s ease-in-out infinite;
+  }
+}
+
+@keyframes borderGlow {
+  0% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.02); }
+  100% { opacity: 0.5; transform: scale(1); }
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0.4; transform: rotate(0deg); }
+  50% { opacity: 0.7; transform: rotate(20deg); }
+}
