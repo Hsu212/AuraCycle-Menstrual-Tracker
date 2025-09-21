@@ -1,5 +1,5 @@
 .cycle-summary {
-  background-color: #fff;
+  background-color: #faf8f8;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -15,4 +15,95 @@
   font-size: 1rem;
   color: #555;
   margin-bottom: 10px;
+}
+
+.cycle-summary ul {
+  list-style: none;
+  padding: 0;
+}
+
+.cycle-summary li {
+  padding: 0.5rem;
+  border-bottom: 1px solid #f4c1d2;
+}
+
+@media (min-width: 481px) {
+  .cycle-summary {
+    padding: 40px;
+    border-radius: 16px;
+    max-width: 800px;
+    margin: 2rem auto;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    border: 3px solid transparent;
+    background: linear-gradient(#fff, #fff) padding-box, linear-gradient(135deg, #ff8ac5, #ffb1c8, #f8c1ff) border-box;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cycle-summary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 16px;
+    border: 3px solid transparent;
+    background: linear-gradient(135deg, #ff8ac5, #ffb1c8, #f8c1ff) border-box;
+    animation: borderGlow 5s ease-in-out infinite;
+    z-index: -1;
+    opacity: 0.5;
+  }
+
+  .cycle-summary h2 {
+    font-size: 2.5rem;
+    margin-bottom: 25px;
+    color: #e91e63;
+    background: linear-gradient(135deg, #ec407a, #ff8ac5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .cycle-summary p {
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+    color: #9c27b0;
+  }
+
+  .cycle-summary li {
+    padding: 1rem;
+    font-size: 1.3rem;
+    border-bottom: 2px solid #f4c1d2;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    background: rgba(244, 193, 210, 0.1);
+    transition: transform 0.3s ease, background 0.3s ease;
+  }
+
+  .cycle-summary li:hover {
+    transform: translateY(-2px);
+    background: rgba(248, 194, 217, 0.3);
+  }
+
+  .cycle-summary ul::after {
+    content: '✨';
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 2rem;
+    opacity: 0.4;
+    animation: sparkle 3s ease-in-out infinite;
+  }
+}
+
+@keyframes borderGlow {
+  0% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.02); }
+  100% { opacity: 0.5; transform: scale(1); }
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0.4; transform: rotate(0deg); }
+  50% { opacity: 0.7; transform: rotate(20deg); }
 }
