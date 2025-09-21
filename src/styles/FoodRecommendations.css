@@ -28,8 +28,24 @@
   border-radius: 4px;
   margin-bottom: 10px;
 }
-
+h2{
+  text-align: center;
+  color: #e91e63;
+  font-size: 2rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, #e1306b, #ed9eb0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 8px 0;
+  line-height: 1.2;
+}
 h3 {
   margin: 10px 0;
-  color: #333;
+  color: #3d3c3c;
+  font-weight: 600 ;
+}
+p{
+  color: #706b6b;
+  font-size: 0.9rem;
 }
