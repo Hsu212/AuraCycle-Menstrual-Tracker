@@ -205,6 +205,48 @@
   }
 }
 
+@media (min-width: 481px) {
+  .signup-card {
+    max-width: 640px;
+    padding: 48px;
+  }
+
+  .signup-title {
+    font-size: 3rem;
+  }
+
+  .signup-subtitle {
+    font-size: 1.3rem;
+  }
+
+  .input-field {
+    padding: 18px 24px 18px 48px;
+    font-size: 1.1rem;
+  }
+
+  .input-icon {
+    font-size: 1.4rem;
+    left: 16px;
+  }
+
+  .signup-button {
+    padding: 18px;
+    font-size: 1.2rem;
+  }
+
+  .error-message {
+    font-size: 1rem;
+  }
+
+  .signin-link {
+    font-size: 1.05rem;
+  }
+
+  .name-inputs {
+    gap: 20px;
+  }
+}
+
 @media (max-width: 480px) {
   .signup-card {
     padding: 24px;
