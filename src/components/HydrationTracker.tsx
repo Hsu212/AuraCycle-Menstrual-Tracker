@@ -1,6 +1,5 @@
-// HydrationTracker.tsx
 import React, { useState } from 'react';
-import '../styles/HydrationTracker.css'; // We'll define CSS below
+import '../styles/HydrationTracker.css';
 
 interface HydrationTrackerProps {
   dailyGoal?: number; // Default to 8 glasses
@@ -23,19 +22,30 @@ const HydrationTracker: React.FC<HydrationTrackerProps> = ({ dailyGoal = 8 }) =>
 
   return (
     <div className="hydration-container">
-      <h2>Hydration Tracker</h2>
-      <p>Goal: {dailyGoal} glasses of water per day</p>
+      <h2 className="hydration-title">Hydration Tracker</h2>
+      <p className="hydration-goal">Goal: {dailyGoal} glasses of water per day</p>
       <div className="progress-bar">
         <div
           className="progress-fill"
           style={{ width: `${progress}%` }}
         ></div>
       </div>
-      <p>Current: {currentIntake} / {dailyGoal} glasses</p>
-      <button onClick={addGlass} disabled={currentIntake >= dailyGoal}>
-        Add a Glass 💧
-      </button>
-      <button onClick={resetTracker}>Reset</button>
+      <p className="hydration-current">Current: {currentIntake} / {dailyGoal} glasses</p>
+      {currentIntake >= dailyGoal && (
+        <p className="hydration-complete">You reached the Goal! ✨</p>
+      )}
+      <div className="hydration-buttons">
+        <button
+          onClick={addGlass}
+          disabled={currentIntake >= dailyGoal}
+          className="hydration-button add-button"
+        >
+          Add a Glass 💧
+        </button>
+        <button onClick={resetTracker} className="hydration-button reset-button">
+          Reset
+        </button>
+      </div>
     </div>
   );
 };
