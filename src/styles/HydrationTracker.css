@@ -1,43 +1,154 @@
-/* HydrationTracker.css */
 .hydration-container {
-  max-width: 300px;
+  max-width: 320px;
   margin: 20px auto;
   padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  border: 2px solid transparent;
+  border-radius: 16px;
   text-align: center;
-  background-color: #f9f9f9;
+  background: linear-gradient(#fff5f7, #fff5f7) padding-box, linear-gradient(135deg, #ff8ac5, #ffb1c8, #f8c1ff) border-box;
+  box-shadow: 0 6px 12px rgba(244, 143, 177, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.hydration-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #e91e63;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, #ec407a, #ff8ac5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hydration-goal,
+.hydration-current {
+  font-size: 1rem;
+  color: #666;
+  margin: 10px 0;
+}
+
+.hydration-complete {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #e91e63;
+  margin: 10px 0;
+  animation: sparkleText 2s ease-in-out infinite;
 }
 
 .progress-bar {
   width: 100%;
   height: 20px;
-  background-color: #e0e0e0;
+  background-color: #fce4ec;
   border-radius: 10px;
   overflow: hidden;
   margin: 10px 0;
+  border: 1px solid #f8bbd9;
 }
 
 .progress-fill {
   height: 100%;
-  background-color: #4CAF50;
+  background: linear-gradient(90deg, #ff8ac5, #e91e63);
   transition: width 0.3s ease;
 }
 
-button {
-  margin: 5px;
-  padding: 10px 15px;
-  background-color: #f4c1d2;
-  color: white;
+.hydration-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.hydration-button {
+  padding: 10px 20px;
   border: none;
-  border-radius: 4px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-button:disabled {
-  background-color: #ccc;
+.add-button {
+  background: linear-gradient(135deg, #ec407a, #e91e63);
+  color: white;
 }
 
-button:hover:not(:disabled) {
-  background-color: #742a4a;
+.reset-button {
+  background: linear-gradient(135deg, #f8bbd9, #f4c1d2);
+  color: #333;
+}
+
+.hydration-button:disabled {
+  background: #e0e0e0;
+  cursor: not-allowed;
+}
+
+.add-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(233, 30, 99, 0.4);
+}
+
+.reset-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #f4c1d2, #ec407a);
+}
+
+.hydration-container::after {
+  content: '💧';
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 1.5rem;
+  opacity: 0.4;
+  animation: sparkle 3s ease-in-out infinite;
+}
+
+@media (min-width: 481px) {
+  .hydration-container {
+    max-width: 400px;
+    padding: 24px;
+    border-radius: 20px;
+    box-shadow: 0 8px 16px rgba(244, 143, 177, 0.4);
+  }
+
+  .hydration-title {
+    font-size: 2rem;
+  }
+
+  .hydration-goal,
+  .hydration-current {
+    font-size: 1.2rem;
+  }
+
+  .hydration-complete {
+    font-size: 1.3rem;
+  }
+
+  .progress-bar {
+    height: 24px;
+    border-radius: 12px;
+  }
+
+  .hydration-button {
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    border-radius: 14px;
+  }
+
+  .hydration-container::after {
+    font-size: 2rem;
+  }
+}
+
+@keyframes sparkleText {
+  0%, 100% { opacity: 0.8; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0.4; transform: rotate(0deg); }
+  50% { opacity: 0.7; transform: rotate(20deg); }
 }
