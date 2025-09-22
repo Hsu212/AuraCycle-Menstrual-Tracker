@@ -3,15 +3,17 @@ import Calendar from 'react-calendar';
 import '../styles/CycleCalendar.css';
 
 interface Cycle {
+  id?: string;
   startDate: string;
   endDate: string;
 }
 
 interface CycleCalendarProps {
   cycles: Cycle[];
+  deleteCycle: (cycleId: string) => void;
 }
 
-const CycleCalendar: React.FC<CycleCalendarProps> = ({ cycles }) => {
+const CycleCalendar: React.FC<CycleCalendarProps> = ({ cycles, deleteCycle }) => {
   const tileClassName = ({ date, view }: { date: Date; view: string }) => {
     if (view !== 'month') return '';
     const dateStr = date.toISOString().split('T')[0];
@@ -25,9 +27,9 @@ const CycleCalendar: React.FC<CycleCalendarProps> = ({ cycles }) => {
 
   return (
     <div className="cycle-calendar bg-white p-5 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold text-gray-800 mb-4">Cycle Calendar</h2>
+      <h2 className="cycle-calendar-title">Cycle Calendar</h2>
       {cycles.length === 0 ? (
-        <p className="text-gray-600">No cycles logged yet.</p>
+        <p className="no-cycles-message">No cycles logged yet. 🌸</p>
       ) : (
         <div>
           <Calendar
@@ -37,8 +39,15 @@ const CycleCalendar: React.FC<CycleCalendarProps> = ({ cycles }) => {
           />
           <ul className="mt-4">
             {cycles.map((cycle, index) => (
-              <li key={index} className="cycle-item p-2 bg-gray-100 rounded mb-2 text-gray-800">
-                Start: {cycle.startDate} | End: {cycle.endDate}
+              <li key={cycle.id || index} className="cycle-item">
+                <span>Start: {cycle.startDate} | End: {cycle.endDate}</span>
+                <button
+                  className="delete-button"
+                  onClick={() => cycle.id && deleteCycle(cycle.id)}
+                  disabled={!cycle.id}
+                >
+                  Delete
+                </button>
               </li>
             ))}
           </ul>
