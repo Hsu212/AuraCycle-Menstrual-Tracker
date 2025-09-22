@@ -3,9 +3,10 @@ import '../styles/CycleForm.css';
 
 interface CycleFormProps {
   addCycle: (startDate: string, endDate: string) => void;
+  resetCycles: () => void;
 }
 
-const CycleForm: React.FC<CycleFormProps> = ({ addCycle }) => {
+const CycleForm: React.FC<CycleFormProps> = ({ addCycle, resetCycles }) => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [error, setError] = useState('');
@@ -26,11 +27,17 @@ const CycleForm: React.FC<CycleFormProps> = ({ addCycle }) => {
     }
   };
 
+  const handleReset = () => {
+    if (window.confirm('Are you sure you want to reset all cycle data? This cannot be undone.')) {
+      resetCycles();
+    }
+  };
+
   return (
     <div className="cycle-form-container">
-      <h2>Add Cycle</h2>
+      <h2 className="cycle-form-title">Add Cycle</h2>
       {error && <p className="error-message">{error}</p>}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="cycle-form">
         <div className="input-group">
           <label>Start Date</label>
           <input
@@ -38,6 +45,7 @@ const CycleForm: React.FC<CycleFormProps> = ({ addCycle }) => {
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
             required
+            className="input-field"
           />
         </div>
         <div className="input-group">
@@ -47,10 +55,17 @@ const CycleForm: React.FC<CycleFormProps> = ({ addCycle }) => {
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
             required
+            className="input-field"
           />
         </div>
-        <button type="submit" className="submit-button">Add Cycle</button>
+        <div className="button-group">
+          <button type="submit" className="submit-button">Add Cycle</button>
+          <button type="button" className="reset-button" onClick={handleReset}>Reset All Cycles</button>
+        </div>
       </form>
+      <div className="form-decoration">
+        <div className="floating-heart">💕</div>
+      </div>
     </div>
   );
 };
