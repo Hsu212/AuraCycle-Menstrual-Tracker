@@ -40,9 +40,21 @@ const SignUpPage: React.FC<SignUpPageProps> = ({ onSignUp }) => {
 
   return (
     <div className="signup-container">
+      <div className="intro-section">
+            <h1 className="intro-title">AuraCycle</h1>
+            <h2 className="intro-subtitle">🩸Menstruation Tracker</h2>
+            <p className="intro-description">
+              Track your cycle with a touch of magic! AuraCycle helps you stay in tune with your body, predict your periods, and embrace every phase with confidence and care. Join our community and make your journey sparkle! 
+            </p>
+            <div className="intro-decoration">
+              <div className="floating-heart">🌸</div>
+              <div className="floating-flower">🌸</div>
+              <div className="floating-heart">🌸</div>
+            </div>
+          </div>
       <div className="signup-card">
         <div className="signup-header">
-          <h1 className="signup-title">Join Aura Cycle</h1>
+          <h1 className="signup-title">Join AuraCycle</h1>
           <p className="signup-subtitle">Create your account</p>
         </div>
 
@@ -102,17 +114,7 @@ const SignUpPage: React.FC<SignUpPageProps> = ({ onSignUp }) => {
             <span className="input-icon">🔒</span>
           </div>
 
-          <div className="input-group">
-            <input
-              type="text"
-              name="profilePicture"
-              placeholder="Profile Picture URL (optional)"
-              value={formData.profilePicture}
-              onChange={handleChange}
-              className="input-field"
-            />
-            <span className="input-icon">🖼️</span>
-          </div>
+          
 
           <button type="submit" className="signup-button">
             Sign Up
@@ -127,7 +129,6 @@ const SignUpPage: React.FC<SignUpPageProps> = ({ onSignUp }) => {
 
         <div className="signup-decoration">
           <div className="floating-heart">💖</div>
-          <div className="floating-flower">🌸</div>
           <div className="floating-heart">💕</div>
         </div>
       </div>
