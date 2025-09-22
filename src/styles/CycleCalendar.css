@@ -3,28 +3,62 @@
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 2;
 }
 
-.cycle-calendar h2 {
+.cycle-calendar-title {
   font-size: 1.5rem;
   color: #333;
   margin-bottom: 15px;
+  text-align: center;
 }
 
-.cycle-calendar p {
+.no-cycles-message {
   font-size: 1rem;
   color: #555;
   margin-bottom: 10px;
+  text-align: center;
 }
 
 .cycle-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 0.5rem;
   border-bottom: 1px solid #f4c1d2;
+  background: rgba(244, 193, 210, 0.1);
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
 }
 
 .cycle-date {
   background-color: #f4c1d2 !important;
   color: #333 !important;
+}
+
+.delete-button {
+  background: linear-gradient(135deg, #f4c1d2, #fce4ec);
+  color: #e91e63;
+  padding: 0.3rem 0.8rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.delete-button:hover {
+  background: linear-gradient(135deg, #fce4ec, #f4c1d2);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(233, 30, 99, 0.2);
+}
+
+.delete-button:disabled {
+  background: #ccc;
+  color: #666;
+  cursor: not-allowed;
 }
 
 @media (min-width: 481px) {
@@ -54,7 +88,7 @@
     opacity: 0.5;
   }
 
-  .cycle-calendar h2 {
+  .cycle-calendar-title {
     font-size: 2rem;
     margin-bottom: 20px;
     color: #e91e63;
@@ -64,7 +98,7 @@
     background-clip: text;
   }
 
-  .cycle-calendar p {
+  .no-cycles-message {
     font-size: 1.2rem;
     margin-bottom: 15px;
     color: #ed77ed;
@@ -81,6 +115,12 @@
   .cycle-item:hover {
     transform: translateY(-2px);
     background: rgba(244, 193, 210, 0.3);
+  }
+
+  .delete-button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 8px;
   }
 
   .react-calendar {
@@ -154,6 +194,34 @@
 
   .react-calendar__month-view__days__day {
     color: #333;
+  }
+}
+
+@media (max-width: 480px) {
+  .cycle-calendar {
+    padding: 15px;
+    max-width: 95%;
+  }
+
+  .cycle-calendar-title {
+    font-size: 1.5rem;
+  }
+
+  .no-cycles-message {
+    font-size: 1rem;
+  }
+
+  .cycle-item {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .delete-button {
+    margin-top: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
   }
 }
 
