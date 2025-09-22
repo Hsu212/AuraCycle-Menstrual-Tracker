@@ -25,6 +25,8 @@ const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
       profilePicture: 'https://avatar.iran.liara.run/public', // Default avatar
     }
   );
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | undefined>(formData.profilePicture);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -36,6 +38,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
         profilePicture: 'https://avatar.iran.liara.run/public', // Default avatar
       }
     );
+    setPreviewUrl(formData.profilePicture);
   }, [user]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,6 +48,34 @@ const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
     });
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setSelectedFile(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
+  };
+
+  const uploadProfilePicture = async (file: File) => {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Math.random()}.${fileExt}`;
+    const filePath = `avatars/${fileName}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('profile-pictures') // Assume a bucket named 'profile-pictures'; create it if needed
+      .upload(filePath, file);
+
+    if (uploadError) {
+      throw uploadError;
+    }
+
+    const { data } = supabase.storage
+      .from('profile-pictures')
+      .getPublicUrl(filePath);
+
+    return data.publicUrl;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.firstName || !formData.lastName) {
@@ -52,13 +83,26 @@ const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
       return;
     }
     try {
+      let updatedProfilePicture = formData.profilePicture;
+
+      if (selectedFile) {
+        updatedProfilePicture = await uploadProfilePicture(selectedFile);
+      }
+
       const { error: updateError } = await supabase.auth.updateUser({
         data: {
           full_name: `${formData.firstName} ${formData.lastName}`,
-          avatar_url: formData.profilePicture || 'https://avatar.iran.liara.run/public',
+          avatar_url: updatedProfilePicture,
         },
       });
       if (updateError) throw updateError;
+
+      setFormData({
+        ...formData,
+        profilePicture: updatedProfilePicture,
+      });
+      setSelectedFile(null);
+      setPreviewUrl(updatedProfilePicture);
       setIsEditing(false);
       setError('');
     } catch (error: any) {
@@ -89,21 +133,20 @@ const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
         <div className="profile-content">
           <div className="profile-picture">
             <img
-              src={formData.profilePicture || 'https://avatar.iran.liara.run/public'}
+              src={previewUrl || 'https://avatar.iran.liara.run/public'}
               alt="Profile"
               className="profile-img"
             />
             {isEditing && (
-              <div className="input-group">
+              <div className="input-group file-input-group">
+                <label htmlFor="profilePicture" className="file-label">Choose Profile Picture</label>
                 <input
-                  type="text"
-                  name="profilePicture"
-                  placeholder="Profile Picture URL"
-                  value={formData.profilePicture}
-                  onChange={handleChange}
-                  className="input-field"
+                  type="file"
+                  id="profilePicture"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="input-field file-input"
                 />
-                <span className="input-icon">🖼️</span>
               </div>
             )}
           </div>
