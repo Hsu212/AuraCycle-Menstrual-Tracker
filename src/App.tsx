@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import CycleForm from './components/CycleForm';
-import CycleSummary from './components/CycleSummary';
 import CycleCalendar from './components/CycleCalendar';
+import CyclePredictions from './components/CyclePredictions';
 import SelfCarePage from './components/SelfCare';
 import HygienePage from './components/Hygiene';
 import Knowledge from './components/Knowledge';
 import SignInPage from './components/SignInPage';
 import SignUpPage from './components/SignUpPage';
 import UserProfile from './components/UserProfile';
+import Community from './components/Community';
 import './App.css';
 import { supabase } from './supabase';
 import { Session, User } from '@supabase/supabase-js';
@@ -27,6 +28,17 @@ interface UserData {
   profilePicture?: string;
 }
 
+// ScrollToTop component to reset scroll position on route change
+const ScrollToTop: React.FC = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
+
 const App: React.FC = () => {
   const [cycles, setCycles] = useState<Cycle[]>([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -34,7 +46,6 @@ const App: React.FC = () => {
   const [session, setSession] = useState<Session | null>(null);
 
   useEffect(() => {
-    // Get initial session
     supabase.auth.getSession().then(({ data: { session } }: { data: { session: Session | null } }) => {
       setSession(session);
       setIsAuthenticated(!!session);
@@ -44,7 +55,6 @@ const App: React.FC = () => {
       }
     });
 
-    // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event: string, session: Session | null) => {
       setSession(session);
       setIsAuthenticated(!!session);
@@ -67,7 +77,7 @@ const App: React.FC = () => {
       firstName: firstName || '',
       lastName: lastName || '',
       email: supabaseUser.email || '',
-      profilePicture: supabaseUser.user_metadata?.avatar_url || 'https://avatar.iran.liara.run/public', // Default avatar
+      profilePicture: supabaseUser.user_metadata?.avatar_url || 'https://avatar.iran.liara.run/public',
     };
   };
 
@@ -91,9 +101,20 @@ const App: React.FC = () => {
   const addCycle = async (startDate: string, endDate: string) => {
     if (!session?.user) {
       console.error('No user logged in');
-      return;
+      throw new Error('No user logged in');
     }
     try {
+      const newStart = new Date(startDate);
+      const newStartMonth = newStart.getMonth();
+      const newStartYear = newStart.getFullYear();
+      const hasOverlap = cycles.some(cycle => {
+        const cycleStart = new Date(cycle.startDate);
+        return cycleStart.getMonth() === newStartMonth && cycleStart.getFullYear() === newStartYear;
+      });
+      if (hasOverlap) {
+        throw new Error('A cycle already exists for this month');
+      }
+
       const { data, error } = await supabase
         .from('cycles')
         .insert([{ user_id: session.user.id, start_date: startDate, end_date: endDate }])
@@ -103,6 +124,42 @@ const App: React.FC = () => {
       setCycles([...cycles, { id: data.id, startDate: data.start_date, endDate: data.end_date }]);
     } catch (error: any) {
       console.error('Error adding cycle:', error.message);
+      throw error;
+    }
+  };
+
+  const deleteCycle = async (cycleId: string) => {
+    if (!session?.user) {
+      console.error('No user logged in');
+      return;
+    }
+    try {
+      const { error } = await supabase
+        .from('cycles')
+        .delete()
+        .eq('id', cycleId)
+        .eq('user_id', session.user.id);
+      if (error) throw error;
+      setCycles(cycles.filter(cycle => cycle.id !== cycleId));
+    } catch (error: any) {
+      console.error('Error deleting cycle:', error.message);
+    }
+  };
+
+  const resetCycles = async () => {
+    if (!session?.user) {
+      console.error('No user logged in');
+      return;
+    }
+    try {
+      const { error } = await supabase
+        .from('cycles')
+        .delete()
+        .eq('user_id', session.user.id);
+      if (error) throw error;
+      setCycles([]);
+    } catch (error: any) {
+      console.error('Error resetting cycles:', error.message);
     }
   };
 
@@ -112,17 +169,25 @@ const App: React.FC = () => {
   };
 
   const handleSignUp = async (formData: { firstName: string; lastName: string; email: string; password: string; profilePicture: string }) => {
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email: formData.email,
       password: formData.password,
       options: {
         data: {
           full_name: `${formData.firstName} ${formData.lastName}`,
-          avatar_url: formData.profilePicture || 'https://avatar.iran.liara.run/public', // Default avatar
+          avatar_url: formData.profilePicture || 'https://avatar.iran.liara.run/public',
         },
       },
     });
     if (error) throw error;
+    if (data.user) {
+      const { error: profileError } = await supabase.from('profiles').insert({
+        id: data.user.id,
+        full_name: `${formData.firstName} ${formData.lastName}`,
+        avatar_url: formData.profilePicture || 'https://avatar.iran.liara.run/public',
+      });
+      if (profileError) throw profileError;
+    }
   };
 
   const handleLogout = async () => {
@@ -130,13 +195,13 @@ const App: React.FC = () => {
     if (error) throw error;
   };
 
-  // Protected route component
   const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return isAuthenticated ? <>{children}</> : <Navigate to="/signin" replace />;
   };
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <div className="app-container">
         <Routes>
           <Route
@@ -154,9 +219,9 @@ const App: React.FC = () => {
                 <div className="main-content">
                   <Navbar onLogout={handleLogout} />
                   <div className="content">
-                    <CycleForm addCycle={addCycle} />
-                    <CycleSummary cycles={cycles} />
-                    <CycleCalendar cycles={cycles} />
+                    <CycleForm addCycle={addCycle} resetCycles={resetCycles} />
+                    <CycleCalendar cycles={cycles} deleteCycle={deleteCycle} />
+                    <CyclePredictions cycles={cycles} />
                   </div>
                 </div>
               </ProtectedRoute>
@@ -196,6 +261,19 @@ const App: React.FC = () => {
                   <Navbar onLogout={handleLogout} />
                   <div className="content">
                     <Knowledge />
+                  </div>
+                </div>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/community"
+            element={
+              <ProtectedRoute>
+                <div className="main-content">
+                  <Navbar onLogout={handleLogout} />
+                  <div className="content">
+                    <Community />
                   </div>
                 </div>
               </ProtectedRoute>
